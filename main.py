@@ -81,10 +81,7 @@ async def convert_docx_to_pdf(
         # Ejecutar Pandoc: DOCX → PDF
         subprocess.run(
             [
-                "pandoc",
-                tmp_docx_path,
-                "-o", tmp_pdf_path,
-                "--pdf-engine=pdflatex"
+            "pandoc", tmp_docx_path, "-o", tmp_pdf_path, "--pdf-engine=weasyprint"
             ],
             check=True,
             capture_output=True,
