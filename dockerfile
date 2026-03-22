@@ -1,7 +1,16 @@
 FROM python:3.11-slim
 
 RUN apt-get update && \
-    apt-get install -y libreoffice --no-install-recommends && \
+    apt-get install -y \
+    libreoffice \
+    fonts-liberation \
+    fonts-dejavu \
+    fonts-noto-color-emoji \
+    fonts-noto \
+    msttcorefonts \
+    fontconfig \
+    --no-install-recommends && \
+    fc-cache -f -v && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

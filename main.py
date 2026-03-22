@@ -26,10 +26,16 @@ async def convert_docx_to_pdf(
         with open(docx_path, "wb") as f:
             f.write(await docx_file.read())
 
-        # Convertir con LibreOffice
+        # Convertir con LibreOffice (mejor compatibilidad con Word)
         subprocess.run(
-            ["libreoffice", "--headless", "--convert-to", "pdf", "--outdir", tmpdir, docx_path],
-            check=True, capture_output=True
+            [
+                "libreoffice", "--headless",
+                "--convert-to", "pdf:writer_pdf_Export",
+                "--outdir", tmpdir,
+                docx_path
+            ],
+            check=True,
+            capture_output=True
         )
 
         # Leer PDF generado
@@ -38,7 +44,9 @@ async def convert_docx_to_pdf(
             pdf_content = f.read()
 
     if not filename.endswith(".pdf"):
-        filename = filename.replace(".docx", ".pdf") + ".pdf"
+        filename = filename.replace(".docx", ".pdf")
+        if not filename.endswith(".pdf"):
+            filename += ".pdf"
 
     return StreamingResponse(
         iter([pdf_content]),
