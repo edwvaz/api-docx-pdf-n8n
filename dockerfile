@@ -1,15 +1,22 @@
 FROM python:3.11-slim
 
-RUN apt-get update && \
-    apt-get install -y \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
+    echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
     libreoffice \
+    ttf-mscorefonts-installer \
     fonts-liberation \
     fonts-dejavu \
-    fonts-noto-color-emoji \
     fonts-noto \
-    msttcorefonts \
+    fonts-noto-color-emoji \
+    fonts-crosextra-carlito \
+    fonts-crosextra-caladea \
     fontconfig \
-    --no-install-recommends && \
+    wget \
+    ca-certificates && \
     fc-cache -f -v && \
     rm -rf /var/lib/apt/lists/*
 
